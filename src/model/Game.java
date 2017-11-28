@@ -5,11 +5,13 @@ import java.util.Random;
 public class Game {
 
     private int[][] field;
+    private int mergeCount;
 
     public Game(int size) {
         field = new int[size][size];
         addNumberToField();
         addNumberToField();
+        mergeCount = 0;
     }
 
     public boolean move(Direction dir) {
@@ -28,6 +30,7 @@ public class Game {
 
                                 if (field[i][y - 1] == tmp) {
                                     field[i][y - 1]++;
+                                    mergeCount++;
                                 } else if (field[i][y - 1] == 0) {
                                     field[i][y - 1] = tmp;
                                 } else {
@@ -55,6 +58,7 @@ public class Game {
 
                                 if (field[i][y + 1] == tmp) {
                                     field[i][y + 1] += 1;
+                                    mergeCount++;
                                 } else if (field[i][y + 1] == 0) {
                                     field[i][y + 1] = tmp;
                                 } else {
@@ -82,6 +86,7 @@ public class Game {
 
                                 if (field[x - 1][j] == tmp) {
                                     field[x - 1][j]++;
+                                    mergeCount++;
                                 } else if (field[x - 1][j] == 0) {
                                     field[x - 1][j] = tmp;
                                 } else {
@@ -110,6 +115,7 @@ public class Game {
 
                                 if (field[x + 1][j] == tmp) {
                                     field[x + 1][j] += 1;
+                                    mergeCount++;
                                 } else if (field[x + 1][j] == 0) {
                                     field[x + 1][j] = tmp;
                                 } else {
@@ -245,4 +251,7 @@ public class Game {
         return field.length;
     }
 
+    public int getMergeCount() {
+        return mergeCount;
+    }
 }

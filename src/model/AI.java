@@ -46,7 +46,8 @@ public class AI {
                     e.printStackTrace();
                 }
             } else {
-                fitness = countMoves;//TODO improve calculation!
+                fitness = game.getMergeCount();
+
 
                 return fitness;
             }
