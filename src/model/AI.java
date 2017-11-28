@@ -39,7 +39,7 @@ public class AI {
 
             view.repaint();
 
-            if (canMove && countSameDirection < 10) {
+            if (canMove && countSameDirection < 6) {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
