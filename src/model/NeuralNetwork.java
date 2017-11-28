@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class NeuralNetwork {
 
+    private final int[] sizes;
     private final double[][] neurons;
     private final int layerCount;
     private final int inputCount;
@@ -11,6 +12,7 @@ public class NeuralNetwork {
     private final double[][] weightMatrix;
 
     public NeuralNetwork(int[] sizes) {
+        this.sizes = sizes;
         this.layerCount = sizes.length;
 
         this.neurons = new double[layerCount][];
@@ -29,13 +31,28 @@ public class NeuralNetwork {
         randomizeWeights();
     }
 
-    private void randomizeWeights() {
+    public void randomizeWeights() {
         Random random = new Random();
 
         for (int l = 0; l < layerCount - 1; l++) {
             for (int n = 0; n < countNeurons(l); n++) {
                 for (int n1 = 0; n1 < countNeurons(l + 1); n1++) {
                     setWeight(l, n, n1, random.nextDouble());
+                }
+            }
+        }
+    }
+
+    public void mixWeights(NeuralNetwork neuralNetwork1, NeuralNetwork neuralNetwork2) {
+        Random random = new Random();
+
+        for (int l = 0; l < layerCount - 1; l++) {
+            for (int n = 0; n < countNeurons(l); n++) {
+                for (int n1 = 0; n1 < countNeurons(l + 1); n1++) {
+                    double weight1 = neuralNetwork1.getWeight(l, n, n1);
+                    double weight2 = neuralNetwork2.getWeight(l, n, n1);
+
+                    setWeight(l, n, n1, random.nextBoolean() ? weight1 : weight2);
                 }
             }
         }
@@ -82,6 +99,10 @@ public class NeuralNetwork {
         return output;
     }
 
+    private double sigmoid(double x) {
+        return (1.0 / (1 + Math.exp(-x)));
+    }
+
     public int getLayerCount() {
         return layerCount;
     }
@@ -92,5 +113,9 @@ public class NeuralNetwork {
 
     public int getOutputCount() {
         return outputCount;
+    }
+
+    public int[] getSizes() {
+        return sizes;
     }
 }

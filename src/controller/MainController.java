@@ -21,14 +21,10 @@ public class MainController {
     private JPanel contentPane;
     private Input input;
 
-
-    private List<Generation> generations = new ArrayList<>();
-    private List<GameView> views = new ArrayList<GameView>();
-
     public MainController(){
         frame = new JFrame();
         frame.setSize(500,500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(true);
         frame.setLocationRelativeTo(null);
         frame.setBackground(Color.WHITE);
@@ -40,6 +36,8 @@ public class MainController {
         //frame.addKeyListener(input);
 
         contentPane.setLayout(new GridLayout(3, 3, 10, 10));
+
+        List<GameView> views = new ArrayList<GameView>();
         for (int i = 0; i < 9; i++) {
             GameView v = new GameView();
             views.add(v);
@@ -49,15 +47,31 @@ public class MainController {
 
         frame.setVisible(true);
 
-        Generation g = new Generation(9);
+        List<Generation> generations = new ArrayList<>();
+        Generation generation = null;
+        while(true) {
+            if (generation == null) {
+                System.out.println("Starting Evolution...");
+                generation = new Generation(9);
+            } else {
+                System.out.println("Breeding Generation number " + generations.size());
+                generation = new Generation(generation);//breeding
+            }
+            generations.add(generation);
 
-        for (int i = 0; i < g.getPopulationCount(); i++) {
-            GameView gameView = views.get(i);
-            Game game = new Game(4);
-            gameView.setGame(game);
+            for (int i = 0; i < generation.getPopulationCount(); i++) {
+                GameView gameView = views.get(i);
+                Game game = new Game(4);
+                gameView.setGame(game);
 
-            double fitness = g.getAI(i).play(game, gameView, 50);
-            System.out.println(fitness);
+                double fitness = generation.getAI(i).play(game, gameView, 50);
+                System.out.println("AI(" + i + ") performed with fitness: " + fitness);
+            }
+
+            for (GameView v : views) {
+                v.setGame(null);
+                v.repaint();
+            }
         }
     }
 }

@@ -6,13 +6,19 @@ import java.util.Random;
 
 public class AI {
 
-
     private Random random = new Random();
 
     private NeuralNetwork neuralNetwork;
+    private double fitness = -1D;
 
     public AI() {
         this.neuralNetwork = new NeuralNetwork(new int[] {16, 16, 4});
+    }
+
+    public AI(AI male, AI female) {
+        this();
+
+        this.neuralNetwork.mixWeights(male.neuralNetwork, female.neuralNetwork);
     }
 
     public double play(Game game, GameView view, int delay) {
@@ -40,7 +46,9 @@ public class AI {
                     e.printStackTrace();
                 }
             } else {
-                return countMoves;
+                fitness = countMoves;//TODO improve calculation!
+
+                return fitness;
             }
         }
     }
@@ -49,10 +57,12 @@ public class AI {
         double[] input = new double[field.length * field.length];
         for(int i = 0 ; i < field.length ; i++){
             for(int j = 0 ; j < field.length ; j++){
-                input[i+j*4] = (double)field[i][j];
+                input[i+j*4] = (double) field[i][j] / 2048D;
             }
         }
+
         double[] output = neuralNetwork.calculate(input);
+
         double maxValue = 0;
         int max = 0;
         for(int i = 0 ; i < output.length ; i++) {
@@ -61,7 +71,15 @@ public class AI {
                 max = i;
             }
         }
+
         return Direction.values()[max];
     }
 
+    public double getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
+    }
 }

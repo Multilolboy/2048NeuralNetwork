@@ -13,7 +13,6 @@ public class Game {
     }
 
     public boolean move(Direction dir) {
-
         switch (dir) {
             case UP:
                 if(canMove(Direction.UP)) {
