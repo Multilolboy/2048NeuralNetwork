@@ -34,6 +34,8 @@ public class GameView extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         if (game != null) {
+            Game game = this.game;//#hacky fix
+
             int width = getWidth() / game.size();
             int height = getHeight() / game.size();
             for (int i = 0; i < game.size(); i++) {
@@ -48,12 +50,4 @@ public class GameView extends JPanel {
         }
 
     }
-
-
-
-
-
-    
-    
-    
 }

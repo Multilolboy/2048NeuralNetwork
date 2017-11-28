@@ -64,7 +64,7 @@ public class MainController {
                 Game game = new Game(4);
                 gameView.setGame(game);
 
-                double fitness = generation.getAI(i).play(game, gameView, 50);
+                double fitness = generation.getAI(i).play(game, gameView, 5);
                 System.out.println("AI(" + i + ") performed with fitness: " + fitness);
             }
 

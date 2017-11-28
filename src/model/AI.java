@@ -12,7 +12,7 @@ public class AI {
     private double fitness = -1D;
 
     public AI() {
-        this.neuralNetwork = new NeuralNetwork(new int[] {16, 16, 4});
+        this.neuralNetwork = new NeuralNetwork(new int[] {16, 46, 4});
     }
 
     public AI(AI male, AI female) {
