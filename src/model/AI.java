@@ -55,11 +55,10 @@ public class AI {
         double sumFitness = 0.0;
         int gameCount = 0;
 
-
+        int moveCount = 0;
         int countSameDirection = 0;
         Direction lastDirection = Direction.UP;
         while(true) {
-            int moveCount= 0;
             Direction nextMove = nextMove(game);
             if(nextMove == lastDirection){
                 countSameDirection++;
@@ -82,7 +81,7 @@ public class AI {
                     }
                 }
             } else {
-                sumFitness += generateFitness(moveCount,game.getMergeCount(),game.getHighestValue());
+                sumFitness += generateFitness(moveCount, game.getMergeCount(), game.getHighestValue());
                 gameCount++;
 
                 if (gameCount >= replays) {
@@ -100,10 +99,8 @@ public class AI {
     }
 
     private double generateFitness(int moveCount, int mergeCount, int highestValue){
-
-        return (Math.pow(2,highestValue) / (double) moveCount*2);
-
-
+        return mergeCount;
+        //return (Math.pow(2,highestValue) / (double) moveCount*2);
     }
 
     private Direction nextMove(Game game) {
