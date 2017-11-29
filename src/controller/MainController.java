@@ -74,7 +74,7 @@ public class MainController {
             }
 
             System.out.println("Generation number " + generations.size() +
-                    " performed with an average fitness of " + generation.getAverageFitness());
+                    " performed with an average fitness of " + generation.getAverageFitness().toString());
 
             for (GameView v : views) {
                 v.setGame(null);

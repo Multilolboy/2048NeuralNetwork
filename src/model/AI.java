@@ -9,11 +9,11 @@ public class AI {
     private Random random = new Random();
 
     private NeuralNetwork neuralNetwork;
-    private double fitness = -1D;
+    private Fitness fitness = new Fitness();
     private int age = 0;
 
     public AI() {
-        this.neuralNetwork = new NeuralNetwork(new int[] {16, 256, 4});
+        this.neuralNetwork = new NeuralNetwork(new int[] {16, 16,16, 4});
         this.neuralNetwork.randomizeWeights();
     }
 
@@ -81,7 +81,7 @@ public class AI {
                     }
                 }
             } else {
-                sumFitness += generateFitness(moveCount, game.getMergeCount(), game.getHighestValue());
+                generateFitness(fitness, moveCount, game.getMergeCount(), game.getHighestValue());
                 gameCount++;
 
                 if (gameCount >= replays) {
@@ -95,12 +95,12 @@ public class AI {
         }
 
 
-        this.fitness = sumFitness / (double) replays;
+        //this.fitness = sumFitness / (double) replays;
     }
 
-    private double generateFitness(int moveCount, int mergeCount, int highestValue){
-        return mergeCount;
-        //return (Math.pow(2,highestValue) / (double) moveCount*2);
+    private void generateFitness(Fitness fitness, int moveCount, int mergeCount, int highestValue){
+        //return mergeCount;
+        fitness.mergeIn(mergeCount,moveCount,highestValue);
     }
 
     private Direction nextMove(Game game) {
@@ -128,11 +128,11 @@ public class AI {
 
 
 
-    public double getFitness() {
+    public Fitness getFitness() {
         return fitness;
     }
 
-    public void setFitness(double fitness) {
+    public void setFitness(Fitness fitness) {
         this.fitness = fitness;
     }
 
@@ -143,4 +143,6 @@ public class AI {
     public void incrementAge() {
         this.age++;
     }
+
+
 }
