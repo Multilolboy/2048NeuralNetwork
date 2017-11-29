@@ -27,8 +27,6 @@ public class NeuralNetwork {
         for (int i = 0; i < layerCount - 1; i++) {
             weightMatrix[i] = new double[countNeurons(i) * countNeurons(i + 1)];
         }
-
-        randomizeWeights();
     }
 
     public void randomizeWeights() {
@@ -43,24 +41,6 @@ public class NeuralNetwork {
         }
     }
 
-    public void mixWeights(NeuralNetwork neuralNetwork1, NeuralNetwork neuralNetwork2) {
-        Random random = new Random();
-
-        for (int l = 0; l < layerCount - 1; l++) {
-            for (int n = 0; n < countNeurons(l); n++) {
-                for (int n1 = 0; n1 < countNeurons(l + 1); n1++) {
-                    double weight1 = neuralNetwork1.getWeight(l, n, n1);
-                    double weight2 = neuralNetwork2.getWeight(l, n, n1);
-
-                    double r = random.nextBoolean() ? 1 : 0;
-                    double newWeight = r * weight1 + (1-r) * weight2;
-
-                    setWeight(l, n, n1, newWeight);
-                }
-            }
-        }
-    }
-
     public int countNeurons(int layer) {
         return neurons[layer].length;
     }
@@ -70,11 +50,11 @@ public class NeuralNetwork {
     }
 
     public double getWeight(int l1, int n1, int n2) {
-        return weightMatrix[l1][n1 * countNeurons(l1 + 1) + n2];
+        return weightMatrix[l1][n1 + n2 * countNeurons(l1)];
     }
 
     public void setWeight(int l1, int n1, int n2, double weight) {
-        weightMatrix[l1][n1 * countNeurons(l1 + 1) + n2] = weight;
+        weightMatrix[l1][n1 + n2 * countNeurons(l1)] = weight;
     }
 
     public double[] calculate(double[] input) {
@@ -89,7 +69,9 @@ public class NeuralNetwork {
                 for (int n0 = 0; n0 < countNeurons(l - 1); n0++) {
                     double weight = getWeight(l - 1, n0, n);
 
-                    sum += getNeuron(l - 1, n0) * weight;
+                    if (weight != Double.NaN) {//check if connection exists
+                        sum += getNeuron(l - 1, n0) * weight;
+                    }
                 }
 
                 neurons[l][n] = sigmoid(sum);

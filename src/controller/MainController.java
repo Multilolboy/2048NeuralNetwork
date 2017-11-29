@@ -4,6 +4,7 @@ import model.AI;
 import model.Game;
 import model.Generation;
 import view.GameView;
+import view.GraphView;
 import view.Input;
 
 import javax.swing.*;
@@ -35,10 +36,12 @@ public class MainController {
         //input = new Input();
         //frame.addKeyListener(input);
 
-        contentPane.setLayout(new GridLayout(10, 10, 10, 10));
+        final int population = 16;
+
+        contentPane.setLayout(new GridLayout((int)Math.ceil(Math.sqrt(population)), (int)Math.ceil(Math.sqrt(population)), 10, 10));
 
         List<GameView> views = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < population; i++) {
             GameView v = new GameView();
             views.add(v);
 
@@ -52,7 +55,7 @@ public class MainController {
         while(true) {
             if (generation == null) {
                 System.out.println("Starting Evolution...");
-                generation = new Generation(100);
+                generation = new Generation(population);
             } else {
                 System.out.println("Breeding Generation number " + generations.size());
                 generation = new Generation(generation);//breeding
@@ -64,10 +67,13 @@ public class MainController {
                 Game game = new Game(4);
                 gameView.setGame(game);
 
-                double fitness = generation.getAI(i).play(game, gameView, 0);
-                System.out.println("AI(" + i + ") performed with fitness: " + fitness+ ", Hightest Value " +
-                        ": " + Math.pow(2,game.getHighestValue()));
+                int delay = generations.size() > 1500 ? 15 : 0;
+
+                generation.getAI(i).play(game, gameView, 10, delay);
+                //System.out.println("AI(" + i + ") performed with fitness: " + fitness);
             }
+
+            System.out.println("Generation number " + generations.size() + " performed with an average fitness of " + generation.getAverageFitness());
 
             for (GameView v : views) {
                 v.setGame(null);

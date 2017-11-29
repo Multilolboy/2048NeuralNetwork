@@ -16,15 +16,18 @@ public class Generation {
     public Generation(Generation previousGeneration) {
         Random random = new Random();
 
-        List<AI> best = previousGeneration.findBest(previousGeneration.getPopulationCount() / 6);
+        List<AI> best = previousGeneration.findBest(previousGeneration.getPopulationCount() / 3);
+        for (AI ai : best) {
+            ai.incrementAge();
+        }
         population.addAll(best);
 
         for (int i = best.size(); i < previousGeneration.getPopulationCount(); i++) {
             AI male = best.get(random.nextInt(best.size() - 1));
             AI female = best.get(random.nextInt(best.size() - 1));
 
-            AI child = new AI(male, female);
-            population.add(child);
+            AI offspring = new AI(male, female);
+            population.add(offspring);
         }
     }
 
@@ -56,6 +59,16 @@ public class Generation {
         }
 
         return result;
+    }
+
+    public double getAverageFitness() {
+        double sumFitness = 0.0;
+
+        for (AI ai : population) {
+            sumFitness += ai.getFitness();
+        }
+
+        return sumFitness / (double) getPopulationCount();
     }
 
     public int getPopulationCount() {

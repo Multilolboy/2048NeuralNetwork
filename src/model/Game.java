@@ -14,6 +14,15 @@ public class Game {
         mergeCount = 0;
     }
 
+    public void resetGame() {
+        for(int i = 0; i < field.length ; i++){
+            for(int j = 0 ; j < field.length ; j++){
+                field[i][j] = 0;
+            }
+        }
+        mergeCount = 0;
+    }
+
     public boolean move(Direction dir) {
         switch (dir) {
             case UP:
