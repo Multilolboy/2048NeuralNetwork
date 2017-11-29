@@ -67,9 +67,9 @@ public class MainController {
                 Game game = new Game(4);
                 gameView.setGame(game);
 
-                int delay = generations.size() > 1500 ? 15 : 0;
+                int delay = generations.size() > 1000 ? 25 : 0;
 
-                generation.getAI(i).play(game, gameView, 10, delay);
+                generation.getAI(i).play(game, gameView, 3, delay);
                 //System.out.println("AI(" + i + ") performed with fitness: " + fitness);
             }
 

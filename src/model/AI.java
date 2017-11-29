@@ -41,8 +41,8 @@ public class AI {
                     //newWeight = n > neuralNetwork.countNeurons(l) / 3 ? weight1 : weight2;
 
                     //mutation
-                    if (random.nextInt(connectionCount) < 3) {
-                        newWeight = random.nextDouble() * 2D - 1D;
+                    if (random.nextInt(connectionCount) < 2) {
+                        newWeight = random.nextDouble() * 4D - 2D;
                     }
 
                     neuralNetwork.setWeight(l, n, n1, newWeight);
