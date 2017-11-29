@@ -73,7 +73,8 @@ public class MainController {
                 //System.out.println("AI(" + i + ") performed with fitness: " + fitness);
             }
 
-            System.out.println("Generation number " + generations.size() + " performed with an average fitness of " + generation.getAverageFitness());
+            System.out.println("Generation number " + generations.size() +
+                    " performed with an average fitness of " + generation.getAverageFitness());
 
             for (GameView v : views) {
                 v.setGame(null);
