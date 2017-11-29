@@ -16,7 +16,7 @@ public class Generation {
     public Generation(Generation previousGeneration) {
         Random random = new Random();
 
-        List<AI> best = previousGeneration.findBest(previousGeneration.getPopulationCount() / 3);
+        List<AI> best = previousGeneration.findBest(previousGeneration.getPopulationCount() / 6);
         population.addAll(best);
 
         for (int i = best.size(); i < previousGeneration.getPopulationCount(); i++) {

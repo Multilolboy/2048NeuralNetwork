@@ -23,7 +23,7 @@ public class MainController {
 
     public MainController(){
         frame = new JFrame();
-        frame.setSize(500,500);
+        frame.setSize(600,600);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(true);
         frame.setLocationRelativeTo(null);
@@ -35,10 +35,10 @@ public class MainController {
         //input = new Input();
         //frame.addKeyListener(input);
 
-        contentPane.setLayout(new GridLayout(3, 3, 10, 10));
+        contentPane.setLayout(new GridLayout(10, 10, 10, 10));
 
-        List<GameView> views = new ArrayList<GameView>();
-        for (int i = 0; i < 9; i++) {
+        List<GameView> views = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
             GameView v = new GameView();
             views.add(v);
 
@@ -52,7 +52,7 @@ public class MainController {
         while(true) {
             if (generation == null) {
                 System.out.println("Starting Evolution...");
-                generation = new Generation(9);
+                generation = new Generation(100);
             } else {
                 System.out.println("Breeding Generation number " + generations.size());
                 generation = new Generation(generation);//breeding
@@ -64,8 +64,9 @@ public class MainController {
                 Game game = new Game(4);
                 gameView.setGame(game);
 
-                double fitness = generation.getAI(i).play(game, gameView, 5);
-                System.out.println("AI(" + i + ") performed with fitness: " + fitness);
+                double fitness = generation.getAI(i).play(game, gameView, 0);
+                System.out.println("AI(" + i + ") performed with fitness: " + fitness+ ", Hightest Value " +
+                        ": " + Math.pow(2,game.getHighestValue()));
             }
 
             for (GameView v : views) {

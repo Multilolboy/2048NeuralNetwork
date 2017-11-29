@@ -12,7 +12,7 @@ public class AI {
     private double fitness = -1D;
 
     public AI() {
-        this.neuralNetwork = new NeuralNetwork(new int[] {16, 46, 4});
+        this.neuralNetwork = new NeuralNetwork(new int[] {16, 128, 4});
     }
 
     public AI(AI male, AI female) {
@@ -26,7 +26,7 @@ public class AI {
         int countSameDirection = 0;
         Direction lastDirection = Direction.UP;
         while(true) {
-            Direction nextMove = nextMove(game.getField());
+            Direction nextMove = nextMove(game);
             if(nextMove == lastDirection){
                 countSameDirection++;
             } else {
@@ -39,26 +39,26 @@ public class AI {
 
             view.repaint();
 
-            if (canMove && countSameDirection < 6) {
+            if (canMove && countSameDirection < 15) {
                 try {
                     Thread.sleep(delay);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             } else {
-                fitness = game.getMergeCount();
-
+                fitness = game.getMergeCount() + (countMoves / 10) + (game.getHighestValue() / 2);
 
                 return fitness;
             }
         }
     }
 
-    private Direction nextMove(int[][] field) {
+    private Direction nextMove(Game game) {
+        int[][] field = game.getField();
         double[] input = new double[field.length * field.length];
         for(int i = 0 ; i < field.length ; i++){
             for(int j = 0 ; j < field.length ; j++){
-                input[i+j*4] = (double) field[i][j] / 2048D;
+                input[i+j*4] = (double) field[i][j] / (double)game.getHighestValue();
             }
         }
 

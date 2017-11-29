@@ -37,7 +37,7 @@ public class NeuralNetwork {
         for (int l = 0; l < layerCount - 1; l++) {
             for (int n = 0; n < countNeurons(l); n++) {
                 for (int n1 = 0; n1 < countNeurons(l + 1); n1++) {
-                    setWeight(l, n, n1, random.nextDouble());
+                    setWeight(l, n, n1, random.nextDouble() * 2d - 1d);
                 }
             }
         }
@@ -52,7 +52,10 @@ public class NeuralNetwork {
                     double weight1 = neuralNetwork1.getWeight(l, n, n1);
                     double weight2 = neuralNetwork2.getWeight(l, n, n1);
 
-                    setWeight(l, n, n1, random.nextBoolean() ? weight1 : weight2);
+                    double r = random.nextBoolean() ? 1 : 0;
+                    double newWeight = r * weight1 + (1-r) * weight2;
+
+                    setWeight(l, n, n1, newWeight);
                 }
             }
         }
@@ -89,7 +92,7 @@ public class NeuralNetwork {
                     sum += getNeuron(l - 1, n0) * weight;
                 }
 
-                neurons[l][n] = sum;
+                neurons[l][n] = sigmoid(sum);
             }
         }
 

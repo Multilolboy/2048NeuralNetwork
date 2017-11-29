@@ -145,6 +145,19 @@ public class Game {
             } while (field[tmp1][tmp2] != 0);
 
             field[tmp1][tmp2] = random.nextInt(2)+1;
+            /*
+            for(int i = 0 ; i < field.length ; i++){
+                for(int j = 0 ; j < field.length ; j++){
+                    if(field[i][j] == 0){
+                        Random random = new Random();
+                        //if(random.nextBoolean()) {
+                            field[i][j] = 1;
+                        //}else{
+                            field[j][i] = 1;
+                        //}
+                    }
+                }
+            }*/
         }
     }
 
@@ -249,6 +262,17 @@ public class Game {
     }
     public int size(){
         return field.length;
+    }
+
+    public int getHighestValue(){
+        int max = 0;
+        for(int i = 0 ; i < field.length ; i++){
+            for(int j = 0 ; j < field.length ; j++){
+                if(field[i][j] > max)
+                    max = field[i][j];
+            }
+        }
+        return max;
     }
 
     public int getMergeCount() {
