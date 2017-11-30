@@ -9,11 +9,11 @@ public class AI {
     private Random random = new Random();
 
     private NeuralNetwork neuralNetwork;
-    private Fitness fitness = new Fitness();
+    private double fitness;
     private int age = 0;
 
     public AI() {
-        this.neuralNetwork = new NeuralNetwork(new int[] {16, 16,16, 4});
+        this.neuralNetwork = new NeuralNetwork(new int[] {16, 150, 4});
         this.neuralNetwork.randomizeWeights();
     }
 
@@ -36,13 +36,14 @@ public class AI {
                     double newWeight;
 
                     //crossover
-                    double r = random.nextDouble() * 0.1;
-                    newWeight = r * weight1 + (1-r) * weight2;
+                    //double r = random.nextBoolean() ? 1.0 : 0.0;
+                    double r = random.nextDouble() * 0.2;
+                    newWeight = r * weight1 + (1 - r) * weight2;
                     //newWeight = n > neuralNetwork.countNeurons(l) / 3 ? weight1 : weight2;
 
                     //mutation
-                    if (random.nextInt(connectionCount) < 2) {
-                        newWeight = random.nextDouble() * 4D - 2D;
+                    if (random.nextInt(connectionCount) < 1) {
+                        newWeight = random.nextDouble() * 2D - 1D;
                     }
 
                     neuralNetwork.setWeight(l, n, n1, newWeight);
@@ -72,7 +73,7 @@ public class AI {
 
             view.repaint();
 
-            if (canMove && countSameDirection < 15) {
+            if (canMove && countSameDirection < 10) {
                 if (delay > 0) {
                     try {
                         Thread.sleep(delay);
@@ -81,7 +82,7 @@ public class AI {
                     }
                 }
             } else {
-                generateFitness(fitness, moveCount, game.getMergeCount(), game.getHighestValue());
+                sumFitness += calcFitness(game.getField(), moveCount, game.getMergeCount(), game.getHighestValue(), game.getMovesWithoutMerge());
                 gameCount++;
 
                 if (gameCount >= replays) {
@@ -94,13 +95,27 @@ public class AI {
             }
         }
 
-
-        //this.fitness = sumFitness / (double) replays;
+        this.fitness = sumFitness / (double) replays;
     }
 
-    private void generateFitness(Fitness fitness, int moveCount, int mergeCount, int highestValue){
-        //return mergeCount;
-        fitness.mergeIn(mergeCount,moveCount,highestValue);
+    private double calcFitness(int[][] field, int moveCount, int mergeCount, int highestValue, int movesWithoutMerge) {
+        double reward = 0.0;
+
+        if (highestValue >= 5) {
+            reward += highestValue * 2.0;
+        }
+
+        if (movesWithoutMerge <= 10) {
+            reward += (10 - movesWithoutMerge) * 1.6;
+        }
+
+        if (highestValue >= 6) {
+            if (field[0][0] == highestValue || field[3][0] == highestValue || field[0][3] == highestValue || field[3][3] == highestValue) {
+                reward += highestValue * 1.9; //reward!
+            }
+        }
+
+        return mergeCount + reward;
     }
 
     private Direction nextMove(Game game) {
@@ -126,13 +141,11 @@ public class AI {
         return Direction.values()[max];
     }
 
-
-
-    public Fitness getFitness() {
+    public double getFitness() {
         return fitness;
     }
 
-    public void setFitness(Fitness fitness) {
+    public void setFitness(double fitness) {
         this.fitness = fitness;
     }
 

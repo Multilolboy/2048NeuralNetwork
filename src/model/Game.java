@@ -5,7 +5,11 @@ import java.util.Random;
 public class Game {
 
     private int[][] field;
-    private int mergeCount;
+    private int mergeCount = 0;
+    /**
+     * amount of moves where we could merge but don't do it
+     */
+    private int movesWithoutMerge = 0;
 
     public Game(int size) {
         field = new int[size][size];
@@ -21,9 +25,13 @@ public class Game {
             }
         }
         mergeCount = 0;
+        movesWithoutMerge = 0;
     }
 
     public boolean move(Direction dir) {
+        boolean canMerge = canMerge();
+        int oldMergeCount = mergeCount;
+
         switch (dir) {
             case UP:
                 if(canMove(Direction.UP)) {
@@ -139,6 +147,11 @@ public class Game {
                 }
                 break;
         }
+
+        if (canMerge && mergeCount == oldMergeCount) {
+            movesWithoutMerge++;
+        }
+
         addNumberToField();
 
         return canMove();
@@ -234,7 +247,6 @@ public class Game {
     }
 
     public boolean canMove(){
-
         if(isFieldFull()){
             for(int j = 0; j < field.length ; j++){
                 for(int i = j%2 ; i < field.length ; i+=2) {
@@ -246,7 +258,16 @@ public class Game {
         }else {
             return true;
         }
+    }
 
+    public boolean canMerge(){
+        for(int j = 0; j < field.length ; j++){
+            for(int i = j%2 ; i < field.length ; i+=2) {
+                if(checkIfSurroundingsHaveSameNumber(i,j))
+                    return true;
+            }
+        }
+        return false;
     }
 
     public boolean checkIfSurroundingsHaveSameNumber(int x, int y) {
@@ -286,5 +307,9 @@ public class Game {
 
     public int getMergeCount() {
         return mergeCount;
+    }
+
+    public int getMovesWithoutMerge() {
+        return movesWithoutMerge;
     }
 }

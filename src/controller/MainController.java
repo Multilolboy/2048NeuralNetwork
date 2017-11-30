@@ -1,6 +1,5 @@
 package controller;
 
-import model.AI;
 import model.Game;
 import model.Generation;
 import view.GameView;
@@ -20,32 +19,35 @@ public class MainController {
 
     private JFrame frame;
     private JPanel contentPane;
+    private JPanel gridPane;
     private Input input;
 
     public MainController(){
         frame = new JFrame();
-        frame.setSize(600,600);
+        frame.setSize(600,700);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(true);
         frame.setLocationRelativeTo(null);
         frame.setBackground(Color.WHITE);
 
-        contentPane = new JPanel();
+        contentPane = new JPanel(new BorderLayout());
         frame.add(contentPane);
 
-        //input = new Input();
-        //frame.addKeyListener(input);
+        GraphView graphView = new GraphView();
+        graphView.setPreferredSize(new Dimension(600, 100));
+        contentPane.add(graphView, BorderLayout.NORTH);
 
-        final int population = 16;
+        final int population = 9;
 
-        contentPane.setLayout(new GridLayout((int)Math.ceil(Math.sqrt(population)), (int)Math.ceil(Math.sqrt(population)), 10, 10));
+        gridPane = new JPanel(new GridLayout((int)Math.ceil(Math.sqrt(population)), (int)Math.ceil(Math.sqrt(population)), 10, 10));
+        contentPane.add(gridPane, BorderLayout.CENTER);
 
         List<GameView> views = new ArrayList<>();
         for (int i = 0; i < population; i++) {
             GameView v = new GameView();
             views.add(v);
 
-            contentPane.add(v);
+            gridPane.add(v);
         }
 
         frame.setVisible(true);
@@ -69,12 +71,14 @@ public class MainController {
 
                 int delay = generations.size() > 1000 ? 25 : 0;
 
-                generation.getAI(i).play(game, gameView, 3, delay);
+                generation.getAI(i).play(game, gameView, 10, delay);
                 //System.out.println("AI(" + i + ") performed with fitness: " + fitness);
             }
 
             System.out.println("Generation number " + generations.size() +
-                    " performed with an average fitness of " + generation.getAverageFitness().toString());
+                    " performed with an average fitness of " + generation.getAverageFitness());
+
+            graphView.putValue(generation.getAverageFitness());
 
             for (GameView v : views) {
                 v.setGame(null);

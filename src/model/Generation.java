@@ -16,7 +16,7 @@ public class Generation {
     public Generation(Generation previousGeneration) {
         Random random = new Random();
 
-        List<AI> best = previousGeneration.findBest(previousGeneration.getPopulationCount() / 3);
+        List<AI> best = previousGeneration.findBest(previousGeneration.getPopulationCount() / 4);
         for (AI ai : best) {
             ai.incrementAge();
         }
@@ -49,7 +49,7 @@ public class Generation {
                     if (best == null) {
                         best = current;
                     } else {
-                        if (current.getFitness().compareTo( best.getFitness()) > 0) {
+                        if (current.getFitness() > best.getFitness()) {
                             best = current;
                         }
                     }
@@ -61,14 +61,14 @@ public class Generation {
         return result;
     }
 
-    public Fitness getAverageFitness() {
-        Fitness sumFitness = new Fitness();
+    public double getAverageFitness() {
+        double sumFitness = 0.0;
 
         for (AI ai : population) {
-            sumFitness.mergeIn(ai.getFitness());
+            sumFitness += ai.getFitness();
         }
 
-        return sumFitness;
+        return sumFitness / (double) getPopulationCount();
     }
 
     public int getPopulationCount() {

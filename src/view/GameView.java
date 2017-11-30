@@ -33,6 +33,8 @@ public class GameView extends JPanel {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
 
+        g2d.clearRect(0, 0, getWidth(), getHeight());
+
         if (game != null) {
             Game game = this.game;//#hacky fix
 

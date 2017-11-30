@@ -49,7 +49,6 @@ public class Fitness implements Comparable<Fitness>{
         this.mergeCount = (this.mergeCount+mergeCount)/2;
         this.highestValue = (this.highestValue + highestValue)/2;
         this.moveCount = (this.moveCount + moveCount) / 2;
-
     }
 
     public void mergeIn(Fitness fitness){

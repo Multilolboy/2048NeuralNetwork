@@ -14,9 +14,14 @@ public class GraphView extends JPanel {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        int scale = (int) (getWidth() / (double) graph.size());
-        for (int x = 0; x < graph.size(); x++) {
-            g2d.fillRect(x * scale, 0, scale, getHeight());
+        g2d.clearRect(0, 0, getWidth(), getHeight());
+
+        g2d.setColor(Color.BLACK);
+        if (graph.size() > 0) {
+            for (int x = 0; x < getWidth(); x++) {
+                double val = graph.get((int) ((x / (double) getWidth()) * graph.size()));
+                g2d.drawLine(x, getHeight(), x, getHeight() - (int) val);
+            }
         }
     }
 
