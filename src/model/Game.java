@@ -144,9 +144,20 @@ public class Game {
         return canMove();
     }
 
+    public int getCountOfTwosAndFours(){
+        int count = 0;
+        for(int i = 0 ; i < field.length ; i++){
+            for(int j = 0 ; j < field.length ; j++){
+                if(field[i][j] <= 2)
+                    count++;
+            }
+        }
+        return count;
+    }
+
     public void addNumberToField(){
         if (!isFieldFull()) {
-            Random random = new Random();
+            /*Random random = new Random();
             int tmp1, tmp2;
             do {
                 tmp1 = random.nextInt(field.length);
@@ -154,19 +165,20 @@ public class Game {
             } while (field[tmp1][tmp2] != 0);
 
             field[tmp1][tmp2] = random.nextInt(2)+1;
-            /*
+            */
             for(int i = 0 ; i < field.length ; i++){
                 for(int j = 0 ; j < field.length ; j++){
                     if(field[i][j] == 0){
-                        Random random = new Random();
+                        //Random random = new Random();
                         //if(random.nextBoolean()) {
                             field[i][j] = 1;
+                            return;
                         //}else{
-                            field[j][i] = 1;
+
                         //}
                     }
                 }
-            }*/
+            }
         }
     }
 

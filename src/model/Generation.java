@@ -49,7 +49,7 @@ public class Generation {
                     if (best == null) {
                         best = current;
                     } else {
-                        if (current.getFitness().compareTo( best.getFitness()) > 0) {
+                        if (current.getFitness()> best.getFitness()) {
                             best = current;
                         }
                     }
@@ -61,14 +61,14 @@ public class Generation {
         return result;
     }
 
-    public Fitness getAverageFitness() {
-        Fitness sumFitness = new Fitness();
+    public double getAverageFitness() {
+        double sumFitness = 0F;
 
         for (AI ai : population) {
-            sumFitness.mergeIn(ai.getFitness());
+            sumFitness += ai.getFitness();
         }
 
-        return sumFitness;
+        return sumFitness/ getPopulationCount();
     }
 
     public int getPopulationCount() {

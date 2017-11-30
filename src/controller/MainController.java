@@ -67,14 +67,14 @@ public class MainController {
                 Game game = new Game(4);
                 gameView.setGame(game);
 
-                int delay = generations.size() > 1000 ? 25 : 0;
+                int delay = generations.size() > 500 ? 25 : 0;
 
-                generation.getAI(i).play(game, gameView, 3, delay);
+                generation.getAI(i).play(game, gameView, 7, delay);
                 //System.out.println("AI(" + i + ") performed with fitness: " + fitness);
             }
 
             System.out.println("Generation number " + generations.size() +
-                    " performed with an average fitness of " + generation.getAverageFitness().toString());
+                    " performed with an average fitness of " + generation.getAverageFitness());
 
             for (GameView v : views) {
                 v.setGame(null);
