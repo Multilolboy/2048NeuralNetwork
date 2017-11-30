@@ -1,4 +1,4 @@
-package model;
+package twoK48.model;
 
 
 public enum Direction {

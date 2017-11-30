@@ -1,6 +1,7 @@
-package model;
+package twoK48.model;
 
-import view.GameView;
+import nn.NeuralNetwork;
+import twoK48.view.GameView;
 
 import java.util.Random;
 
@@ -9,11 +10,11 @@ public class AI {
     private Random random = new Random();
 
     private NeuralNetwork neuralNetwork;
-    private double fitness;
+    private double fitness = -1F;
     private int age = 0;
 
     public AI() {
-        this.neuralNetwork = new NeuralNetwork(new int[] {16, 150, 4});
+        this.neuralNetwork = new NeuralNetwork(new int[] {20, 20,64, 4});
         this.neuralNetwork.randomizeWeights();
     }
 
@@ -116,16 +117,26 @@ public class AI {
         }
 
         return mergeCount + reward;
+
+        //return Math.pow(2,highestValue)+ mergeCount-(moveCount+countTwoAndFours);
+        //return Math.pow(2,highestValue)+moveCount - countTwoAndFours;
+        //return highestValue+ mergeCount/highestValue + (mergeCount/moveCount)* 10 - countTwoAndFours;
+        //return highestValue-countTwoAndFours*highestValue/moveCount*2;
     }
 
     private Direction nextMove(Game game) {
         int[][] field = game.getField();
-        double[] input = new double[field.length * field.length];
+        double[] input = new double[field.length * field.length +4];
         for(int i = 0 ; i < field.length ; i++){
             for(int j = 0 ; j < field.length ; j++){
                 input[i+j*4] = (double) field[i][j] / (double) game.getHighestValue();
             }
         }
+
+        input[16] = game.canMove(Direction.UP) ? 1 : 0;
+        input[17] = game.canMove(Direction.DOWN) ? 1 : 0;
+        input[18] = game.canMove(Direction.RIGHT) ? 1 : 0;
+        input[19] = game.canMove(Direction.LEFT) ? 1 : 0;
 
         double[] output = neuralNetwork.calculate(input);
 
@@ -143,10 +154,6 @@ public class AI {
 
     public double getFitness() {
         return fitness;
-    }
-
-    public void setFitness(double fitness) {
-        this.fitness = fitness;
     }
 
     public int getAge() {

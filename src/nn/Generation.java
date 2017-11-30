@@ -1,4 +1,4 @@
-package model;
+package nn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Generation {
 
-    private List<AI> population = new ArrayList<>();
+    private List<Unit> population = new ArrayList<>();
 
     /**
      * Constructor for breeding
@@ -16,40 +16,40 @@ public class Generation {
     public Generation(Generation previousGeneration) {
         Random random = new Random();
 
-        List<AI> best = previousGeneration.findBest(previousGeneration.getPopulationCount() / 4);
-        for (AI ai : best) {
-            ai.incrementAge();
+        List<Unit> best = previousGeneration.findBest(previousGeneration.getPopulationCount() / 3);
+        for (Unit unit : best) {
+            unit.incrementAge();
         }
         population.addAll(best);
 
         for (int i = best.size(); i < previousGeneration.getPopulationCount(); i++) {
-            AI male = best.get(random.nextInt(best.size() - 1));
-            AI female = best.get(random.nextInt(best.size() - 1));
+            Unit male = best.get(random.nextInt(best.size() - 1));
+            Unit female = best.get(random.nextInt(best.size() - 1));
 
-            AI offspring = new AI(male, female);
+            Unit offspring = male.produceOffspring(female);
             population.add(offspring);
         }
     }
 
-    public Generation(int population){
+    public Generation(Unit.Strategy strategy, int population){
         for(int i = 0; i < population ; i++ ){
-            this.population.add(new AI());
+            this.population.add(new Unit(strategy));
         }
     }
 
-    public List<AI> findBest(int count) {
-        List<AI> result = new ArrayList<>();
+    public List<Unit> findBest(int count) {
+        List<Unit> result = new ArrayList<>();
 
         for (int c = 0; c < count; c++) {
-            AI best = null;
+            Unit best = null;
             for (int i = 0; i < getPopulationCount(); i++) {
-                AI current = population.get(i);
+                Unit current = population.get(i);
 
                 if (!result.contains(current)) {
                     if (best == null) {
                         best = current;
                     } else {
-                        if (current.getFitness() > best.getFitness()) {
+                        if (current.getFitness()> best.getFitness()) {
                             best = current;
                         }
                     }
@@ -62,20 +62,20 @@ public class Generation {
     }
 
     public double getAverageFitness() {
-        double sumFitness = 0.0;
+        double sumFitness = 0F;
 
-        for (AI ai : population) {
-            sumFitness += ai.getFitness();
+        for (Unit unit : population) {
+            sumFitness += unit.getFitness();
         }
 
-        return sumFitness / (double) getPopulationCount();
+        return sumFitness/ getPopulationCount();
     }
 
     public int getPopulationCount() {
         return population.size();
     }
 
-    public AI getAI(int i) {
+    public Unit getUnit(int i) {
         return population.get(i);
     }
 

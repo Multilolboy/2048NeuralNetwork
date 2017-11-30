@@ -1,4 +1,4 @@
-package view;
+package twoK48.view;
 
 import javax.swing.*;
 import java.awt.*;

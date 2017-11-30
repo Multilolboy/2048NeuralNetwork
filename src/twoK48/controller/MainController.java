@@ -1,10 +1,10 @@
-package controller;
+package twoK48.controller;
 
-import model.Game;
-import model.Generation;
-import view.GameView;
-import view.GraphView;
-import view.Input;
+import twoK48.model.Game;
+import twoK48.model.Generation;
+import twoK48.view.GameView;
+import twoK48.view.GraphView;
+import twoK48.view.Input;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,7 +71,7 @@ public class MainController {
 
                 int delay = generations.size() > 1000 ? 25 : 0;
 
-                generation.getAI(i).play(game, gameView, 10, delay);
+                generation.getAI(i).play(game, gameView, 1, delay);
                 //System.out.println("AI(" + i + ") performed with fitness: " + fitness);
             }
 

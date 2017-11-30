@@ -1,6 +1,6 @@
-package view;
+package twoK48.view;
 
-import model.Direction;
+import twoK48.model.Direction;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
