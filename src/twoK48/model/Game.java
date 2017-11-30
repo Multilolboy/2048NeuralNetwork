@@ -1,6 +1,4 @@
-package model;
-
-import java.util.Random;
+package twoK48.model;
 
 public class Game {
 
@@ -142,6 +140,17 @@ public class Game {
         addNumberToField();
 
         return canMove();
+    }
+
+    public int getCountOfEmptyFields(){
+        int count = 0;
+        for(int i = 0 ; i < field.length ; i++){
+            for(int j = 0 ; j < field.length ; j++){
+                if(field[i][j] == 0)
+                    count++;
+            }
+        }
+        return count;
     }
 
     public int getCountOfTwosAndFours(){

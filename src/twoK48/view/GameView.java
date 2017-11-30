@@ -1,7 +1,7 @@
-package view;
+package twoK48.view;
 
-import model.Direction;
-import model.Game;
+import twoK48.model.Direction;
+import twoK48.model.Game;
 
 import javax.swing.*;
 import java.awt.*;

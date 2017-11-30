@@ -1,6 +1,7 @@
-package model;
+package twoK48.model;
 
-import view.GameView;
+import nn.NeuralNetwork;
+import twoK48.view.GameView;
 
 import java.util.Random;
 
@@ -13,7 +14,7 @@ public class AI {
     private int age = 0;
 
     public AI() {
-        this.neuralNetwork = new NeuralNetwork(new int[] {20, 64, 4});
+        this.neuralNetwork = new NeuralNetwork(new int[] {20, 20,64, 4});
         this.neuralNetwork.randomizeWeights();
     }
 
@@ -81,7 +82,7 @@ public class AI {
                     }
                 }
             } else {
-                sumFitness += generateFitness( moveCount, game.getMergeCount(), game.getHighestValue(),game.getCountOfTwosAndFours());
+                sumFitness += generateFitness( moveCount, game.getMergeCount(), game.getHighestValue(),game.getCountOfTwosAndFours(),game.getCountOfEmptyFields());
                 gameCount++;
 
                 if (gameCount >= replays) {
@@ -98,13 +99,13 @@ public class AI {
         this.fitness = sumFitness / (double) replays;
     }
 
-    private double generateFitness(int moveCount, int mergeCount, int highestValue, int countTwoAndFours){
+    private double generateFitness(int moveCount, int mergeCount, int highestValue, int countTwoAndFours, int emptyFields){
         //return Math.pow(2,highestValue)+ mergeCount-(moveCount+countTwoAndFours);
         //return Math.pow(2,highestValue)+moveCount - countTwoAndFours;
         //return highestValue+ mergeCount/highestValue + (mergeCount/moveCount)* 10 - countTwoAndFours;
         //return highestValue-countTwoAndFours*highestValue/moveCount*2;
-        //return mergeCount;
         return mergeCount;
+
     }
 
     private Direction nextMove(Game game) {
